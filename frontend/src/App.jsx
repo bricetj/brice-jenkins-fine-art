@@ -16,6 +16,7 @@ function App() {
         <div className="site-title">BRICE JENKINS FINE ART</div>
         <div className="cart-icon">
             <a href="/cart"><MdShoppingCart/></a>
+            <div className="red-circle">1</div>
         </div>
       </header>
       <Router>

@@ -4,11 +4,26 @@
  */
 
 import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import ArtworkCollection from "../components/ArtworkCollection";
 
 /**
  * React page component that creates a simple homepage for the app.
  */
 function HomePage() {
+    const [artworks, setArtworks] = useState([]);
+
+    // Calls the 'GET /artworks' endpoint in the REST API.
+    const loadArtworks = async () => {
+        const response = await fetch('/artworks');
+        const data = await response.json();
+        setArtworks(data);
+    }
+
+    useEffect( () => {
+        loadArtworks();
+    }, []);
+
     return (
         <>
             <div className="welcome-banner-container">
@@ -29,6 +44,8 @@ function HomePage() {
                 </div>
             </div>
             <h2>New Artworks</h2>
+            <ArtworkCollection artworks={artworks}/>
+
         </>
     );
 }
