@@ -4,10 +4,12 @@
  */
 
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ArtworkCollection from "../components/ArtworkCollection";
 
-function ShopPage() {
+function ShopPage({ setArtworkToView }) {
     const [artworks, setArtworks] = useState([]);
+    const navigate = useNavigate();
     
     // Calls the 'GET /artworks' endpoint in the REST API.
     const loadArtworks = async () => {
@@ -20,10 +22,15 @@ function ShopPage() {
         loadArtworks();
     }, []);
 
+    const onView = (artwork) => {
+        setArtworkToView(artwork)
+        navigate('/view-artwork')
+    }
+
     return (
         <>
             <h2>Shop Artworks</h2>
-            <ArtworkCollection artworks={artworks}/>
+            <ArtworkCollection artworks={artworks} onView={onView}/>
         </>
     );
 }

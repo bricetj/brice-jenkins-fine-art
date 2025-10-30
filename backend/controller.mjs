@@ -49,3 +49,8 @@ app.get('/artworks', asyncHandler(async (req, res) => {
     const artworks = await artwork.getArtworks();
     res.status(200).json(artworks);
 }));
+
+app.get('/artworks/new', asyncHandler(async (req, res) => {
+    const artworks = await artwork.getNewArtworks();
+    res.status(200).json(artworks);
+}))

@@ -34,7 +34,8 @@ const artworkSchema = mongoose.Schema({
     materials: {type: 'String', required: 'true'},
     description: {type: 'String', required: 'true'},
     dimensions: {type: 'String', required: 'true'},
-    image: {type: 'String', required: 'true'}
+    image: {type: 'String', required: 'true'},
+    date: {type: 'Date', required: 'true'}
 });
 
 /**
@@ -76,4 +77,19 @@ const getArtworks = async () => {
     return query.exec();
 }
 
-export { connect, getArtworks, createArtwork };
+const getNewArtworks = async () => {
+    try {
+        let threeMonths = new Date();
+        threeMonths.setMonth(threeMonths.getMonth() - 3);
+
+        const query = Artwork.find({
+            date: {$gte: threeMonths}
+        });
+
+        return query.exec();
+    } catch (error) {
+        console.error('Error retrieving new documents')
+    }
+}
+
+export { connect, getArtworks, getNewArtworks, createArtwork };

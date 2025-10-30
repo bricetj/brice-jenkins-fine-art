@@ -1,14 +1,19 @@
 import ArtworkItem from "./ArtworkItem";
 
-function ArtworkCollection ({ artworks }) {
+function ArtworkCollection ({ artworks, onView }) {
     return (
-        <div className="column-container">
-            {artworks.map((artwork, index) =>
-                <ArtworkItem 
-                    artwork={artwork}
-                    key={index}
-                />
-            )}
+        <div className="gallery-container">
+            <div className="gallery-blocks">
+                <div className="column-container">
+                    {artworks.map((artwork, index) =>
+                        <ArtworkItem 
+                            artwork={artwork}
+                            onView={onView}
+                            key={index}
+                        />
+                    )}
+                </div>
+            </div>
         </div>
     )
 }

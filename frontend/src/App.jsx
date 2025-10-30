@@ -1,13 +1,16 @@
 import './App.css'
 import Navigation from './components/Navigation';
+import { useState } from 'react';
 import HomePage from './pages/HomePage';
 import ShopPage from './pages/ShopPage';
 import ShoppingCartPage from './pages/ShoppingCartPage';
+import ViewArtworkPage from './pages/ViewArtworkPage';
 import { MdShoppingCart } from "react-icons/md";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+
 
 function App() {
+  const [artworkToView, setArtworkToView] = useState([]);
 
   return (
     <>
@@ -22,9 +25,10 @@ function App() {
       <Router>
         <Navigation/>
           <Routes>
-            <Route path='/' element={<HomePage />}></Route>
-            <Route path='/shop' element={<ShopPage />}></Route>
+            <Route path='/' element={<HomePage setArtworkToView={setArtworkToView} />}></Route>
+            <Route path='/shop' element={<ShopPage setArtworkToView={setArtworkToView} />}></Route>
             <Route path='/cart' element={<ShoppingCartPage />}></Route>
+            <Route path='/view-artwork' element={<ViewArtworkPage artworkToView={artworkToView}/>}></Route>
           </Routes>
       </Router>
       <footer>

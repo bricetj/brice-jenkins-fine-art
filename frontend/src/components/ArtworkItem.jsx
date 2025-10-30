@@ -1,6 +1,8 @@
-function ArtworkItem ({ artwork }) {
+function ArtworkItem ({ artwork, onView }) {
     return (
-        <div className="artwork-item">
+        <div className="artwork-item" onClick={e => {
+                                    e.preventDefault();
+                                    onView(artwork)}}>
             <div className="artwork-image-background">
                 <img
                     className="artwork-image" 

@@ -73,7 +73,7 @@ nav a:hover {
 }
 
 footer {
-    margin: 300px 0 0 0;
+    margin: 150px 0 0 0;
     color: rgb(230, 230, 230);
     padding: 15px;
     box-shadow: 1px 1px 1px rgb(85, 85, 85);
@@ -82,7 +82,7 @@ footer {
 }
 
 h2 {
-    margin: 10px;
+    margin: 20px;
     padding: 20px;
 }
 
@@ -213,12 +213,19 @@ button:focus-visible {
 }
 
 /* Artwork/Shop Item CSS */
+/* .gallery-container {
+    
+}
+
+.gallery-blocks {
+    
+} */
+
 .column-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 20px;
-
+    justify-content: center;
+    gap: 120px;
 }
 
 .artwork-item {
@@ -266,6 +273,52 @@ button:focus-visible {
     margin-left: 70%;
     font-size: 12px;
     padding: 5px;
+}
+
+/* Artwork View CSS */
+.view-artwork-container {
+    display: flex;
+    padding-top: 40px;
+}
+
+.view-artwork-image-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 55%;
+    background-color: rgb(182, 182, 182);
+}
+
+.view-artwork-image {
+    position: relative;
+    box-shadow: 1px 1px 1px 1px rgb(163, 163, 163);
+    max-width: 80%;
+    max-height: 80%;
+}
+
+.view-artwork-information {
+    position: relative;
+    width: 500px;
+    margin: 20px;
+    text-align: left;
+}
+
+.view-artwork-information h2 {
+    padding: 0;
+    margin-left: 0;
+    margin-bottom: 20px;
+}
+
+.view-artwork-information p {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: 0;
+    margin: 0;
+}
+
+.view-artwork-button {
+    margin-top: 30px;
+    width: 300px;
 }
 
 .tooltip-div {

@@ -6,16 +6,18 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import ArtworkCollection from "../components/ArtworkCollection";
+import { useNavigate } from "react-router-dom";
 
 /**
  * React page component that creates a simple homepage for the app.
  */
-function HomePage() {
+function HomePage({ setArtworkToView }) {
     const [artworks, setArtworks] = useState([]);
+    const navigate = useNavigate();
 
     // Calls the 'GET /artworks' endpoint in the REST API.
     const loadArtworks = async () => {
-        const response = await fetch('/artworks');
+        const response = await fetch('/artworks/new');
         const data = await response.json();
         setArtworks(data);
     }
@@ -23,6 +25,11 @@ function HomePage() {
     useEffect( () => {
         loadArtworks();
     }, []);
+
+    const onView = (artwork) => {
+        setArtworkToView(artwork)
+        navigate('/view-artwork')
+    }
 
     return (
         <>
@@ -44,7 +51,7 @@ function HomePage() {
                 </div>
             </div>
             <h2>New Artworks</h2>
-            <ArtworkCollection artworks={artworks}/>
+            <ArtworkCollection artworks={artworks} setArtworkToView={setArtworkToView} onView={onView}/>
 
         </>
     );
