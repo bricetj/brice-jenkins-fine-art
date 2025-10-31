@@ -1,6 +1,6 @@
 import CartItem from "./CartItem";
 
-function CartCollection ({ shoppingCartItems, totalQuantity, deleteCartItem }) {
+function CartCollection ({ shoppingCartItems, totalQuantity, setItemToDelete, openPopupHandler }) {
     // Message to display if cart is empty.
     if (totalQuantity == 0) {
         return (
@@ -15,7 +15,8 @@ function CartCollection ({ shoppingCartItems, totalQuantity, deleteCartItem }) {
                     {shoppingCartItems.map((artwork, index) =>
                         <CartItem 
                             artwork={artwork}
-                            deleteCartItem={deleteCartItem}
+                            setItemToDelete={setItemToDelete}
+                            openPopupHandler={openPopupHandler}
                             key={index}
                         />
                     )}

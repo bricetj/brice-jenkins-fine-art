@@ -1,7 +1,7 @@
 import Tooltip from "./Tooltip";
 import { MdDelete } from "react-icons/md";
 
-function CartItem ({ artwork, deleteCartItem }) {
+function CartItem ({ artwork, setItemToDelete, openPopupHandler }) {
     return (
         <div className="cart-item">
             <div className="cart-item-info">
@@ -26,7 +26,8 @@ function CartItem ({ artwork, deleteCartItem }) {
                             <a><MdDelete
                                 onClick={e => {
                                     e.preventDefault;
-                                    deleteCartItem(artwork);
+                                    setItemToDelete(artwork);
+                                    openPopupHandler();
                                     }}/>
                             </a>
                         }
