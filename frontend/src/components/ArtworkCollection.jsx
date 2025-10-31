@@ -1,6 +1,6 @@
 import ArtworkItem from "./ArtworkItem";
 
-function ArtworkCollection ({ artworks, onView, addCartItem }) {
+function ArtworkCollection ({ artworks, onView, addCartItem, shoppingCart }) {
     return (
         <div className="gallery-container">
             <div className="gallery-blocks">
@@ -8,6 +8,7 @@ function ArtworkCollection ({ artworks, onView, addCartItem }) {
                     {artworks.map((artwork, index) =>
                         <ArtworkItem 
                             artwork={artwork}
+                            shoppingCart={shoppingCart}
                             onView={onView}
                             addCartItem={addCartItem}
                             key={index}

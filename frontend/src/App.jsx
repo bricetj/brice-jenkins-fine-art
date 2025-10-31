@@ -65,10 +65,10 @@ function App() {
         </header>
         <Navigation/>
           <Routes>
-            <Route path='/' element={<HomePage setArtworkToView={setArtworkToView} addCartItem={addCartItem} />}></Route>
-            <Route path='/shop' element={<ShopPage setArtworkToView={setArtworkToView} addCartItem={addCartItem}/>}></Route>
+            <Route path='/' element={<HomePage setArtworkToView={setArtworkToView} addCartItem={addCartItem} shoppingCart={shoppingCart} />}></Route>
+            <Route path='/shop' element={<ShopPage setArtworkToView={setArtworkToView} addCartItem={addCartItem} shoppingCart={shoppingCart}/>}></Route>
             <Route path='/cart' element={<ShoppingCartPage shoppingCart={shoppingCart} setItemToDelete={setItemToDelete} openPopupHandler={openPopupHandler} isVisible={isVisible}/>}></Route>
-            <Route path='/view-artwork' element={<ViewArtworkPage artworkToView={artworkToView} addCartItem={addCartItem}/>}></Route>
+            <Route path='/view-artwork' element={<ViewArtworkPage artworkToView={artworkToView} addCartItem={addCartItem} shoppingCart={shoppingCart}/>}></Route>
           </Routes>
       </Router>
       <div>

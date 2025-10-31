@@ -6,7 +6,22 @@
 import ArtworkCollection from "../components/ArtworkCollection";
 import Tooltip from "../components/Tooltip";
 
-function ViewArtworkPage({ artworkToView, addCartItem }) {
+function ViewArtworkPage({ artworkToView, addCartItem, shoppingCart }) {
+    let buttonText = "Add to Cart";
+    let isDisabled = false;
+    
+    const changeCartButton = () => {
+        for (let i = 0; i < shoppingCart.items.length; i++) {
+            if (shoppingCart.items[i]._id == artworkToView._id) {
+                buttonText = "Item Added";
+                isDisabled = true;
+                return;
+            }
+        }
+    }
+
+    changeCartButton();
+
     return (
         <>
             <div className="view-artwork-container">
@@ -29,8 +44,9 @@ function ViewArtworkPage({ artworkToView, addCartItem }) {
                         text={"Click this button to save this item to your cart. You can remove items later if desired."} 
                         childElement={
                             <button
-                                className="view-artwork-button"
-                                onClick={e => {e.preventDefault(); addCartItem(artworkToView)}}>Add to Cart</button>
+                                className={`view-artwork-add-button-${isDisabled}`}
+                                disabled={isDisabled}
+                                onClick={e => {e.preventDefault(); addCartItem(artworkToView)}}>{buttonText}</button>
                         }
                         delay={1000}>
                     </Tooltip>
