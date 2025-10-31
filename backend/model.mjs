@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import 'dotenv/config';
 
 const ARTWORK_DB_NAME = 'Artwork';
+const CART_DB_NAME = 'Cart';
 
 let connection = undefined;
 
@@ -17,7 +18,10 @@ async function connect(){
     try{
         connection = await mongoose.connect(process.env.MONGODB_CONNECT_STRING, 
                 {dbName: ARTWORK_DB_NAME});
-        console.log("Successfully connected to MongoDB using Mongoose!");
+        console.log("Successfully connected to Artwork DB using Mongoose!");
+        connection = await mongoose.connect(process.env.MONGODB_CONNECT_STRING, 
+                {dbName: CART_DB_NAME});
+        console.log("Successfully connected to Cart DB using Mongoose!");
     } catch(err){
         console.log(err);
         throw Error(`Could not connect to MongoDB ${err.message}`)
@@ -38,12 +42,25 @@ const artworkSchema = mongoose.Schema({
     date: {type: 'Date', required: 'true'}
 });
 
+const cartItemSchema = mongoose.Schema({
+    artworkId: {type: mongoose.Schema.Types.ObjectId, ref: 'Artwork', unique: true },
+    quantity: {type: 'Number', required: 'true'}
+});
+
+const cartSchema = mongoose.Schema({
+    items: [cartItemSchema],
+    totalQuantity: {type: 'Number', required: 'true'},
+    totalPrice: {type: 'Number', required: 'true'},
+});
+
 /**
  * Compiles model from the schema.
  */
 const Artwork = mongoose.model(ARTWORK_DB_NAME, artworkSchema);
+const Cart = mongoose.model(CART_DB_NAME, cartSchema);
 
 
+/* ARTWORK MODEL METHODS */
 /**
  * Creates an artwork document.
  * @param {*} title 
@@ -88,8 +105,26 @@ const getNewArtworks = async () => {
 
         return query.exec();
     } catch (error) {
-        console.error('Error retrieving new documents')
+        console.error('Error retrieving new documents');
     }
 }
+
+/* CART MODEL METHODS */
+
+// const createCartItem = async (artworkId, quantity) => {
+//     try {
+
+//     } catch (error) {
+//         console.error('Error creating new cart item');
+//     }
+// }
+
+// const createCart = async () => {
+//     try {
+
+//     } catch (error) {
+//         console.error('Error creating new cart');
+//     }
+// }
 
 export { connect, getArtworks, getNewArtworks, createArtwork };

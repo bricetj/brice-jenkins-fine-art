@@ -1,9 +1,11 @@
-function ArtworkItem ({ artwork, onView }) {
+import Tooltip from "./Tooltip";
+
+function ArtworkItem ({ artwork, onView, addCartItem }) {
     return (
-        <div className="artwork-item" onClick={e => {
-                                    e.preventDefault();
-                                    onView(artwork)}}>
-            <div className="artwork-image-background">
+        <div className="artwork-item">
+            <div className="artwork-image-background"
+                 onClick={e => {e.preventDefault();
+                                onView(artwork)}}>
                 <img
                     className="artwork-image" 
                     src={artwork.image}>
@@ -12,7 +14,18 @@ function ArtworkItem ({ artwork, onView }) {
             <div className="artwork-title">{artwork.title}</div>
             <div className="artwork-price">${artwork.price}</div>
             <div className="artwork-medium">{artwork.medium}</div>
-            <button className="artwork-button">Add to Cart</button>
+            <Tooltip
+                text={"Click this button to save this item to your cart. You can remove items later if desired."}
+                childElement={
+                    <button
+                        className="artwork-button"
+                        onClick={e => {
+                                    e.preventDefault();
+                                    addCartItem(artwork)}}
+                    >Add to Cart</button>
+                }
+                delay={1000}>
+            </Tooltip>
         </div>
     )
 }

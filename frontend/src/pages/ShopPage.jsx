@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ArtworkCollection from "../components/ArtworkCollection";
 
-function ShopPage({ setArtworkToView }) {
+function ShopPage({ setArtworkToView, addCartItem }) {
     const [artworks, setArtworks] = useState([]);
     const navigate = useNavigate();
     
@@ -30,7 +30,7 @@ function ShopPage({ setArtworkToView }) {
     return (
         <>
             <h2>Shop Artworks</h2>
-            <ArtworkCollection artworks={artworks} onView={onView}/>
+            <ArtworkCollection artworks={artworks} onView={onView} addCartItem={addCartItem}/>
         </>
     );
 }

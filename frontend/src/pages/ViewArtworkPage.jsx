@@ -4,8 +4,9 @@
  */
 
 import ArtworkCollection from "../components/ArtworkCollection";
+import Tooltip from "../components/Tooltip";
 
-function ViewArtworkPage({ artworkToView }) {
+function ViewArtworkPage({ artworkToView, addCartItem }) {
     return (
         <>
             <div className="view-artwork-container">
@@ -24,7 +25,15 @@ function ViewArtworkPage({ artworkToView }) {
                     <p>{artworkToView.description}</p>
                     <h3>Dimensions</h3>
                     <p>{artworkToView.dimensions}</p>
-                    <button className="view-artwork-button">Add to Cart</button>
+                    <Tooltip
+                        text={"Click this button to save this item to your cart. You can remove items later if desired."} 
+                        childElement={
+                            <button
+                                className="view-artwork-button"
+                                onClick={e => {e.preventDefault(); addCartItem(artworkToView)}}>Add to Cart</button>
+                        }
+                        delay={1000}>
+                    </Tooltip>
                 </div>
             </div>
         </>

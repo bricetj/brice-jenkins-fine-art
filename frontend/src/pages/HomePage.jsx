@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 /**
  * React page component that creates a simple homepage for the app.
  */
-function HomePage({ setArtworkToView }) {
+function HomePage({ setArtworkToView, addCartItem }) {
     const [artworks, setArtworks] = useState([]);
     const navigate = useNavigate();
 
@@ -51,7 +51,11 @@ function HomePage({ setArtworkToView }) {
                 </div>
             </div>
             <h2>New Artworks</h2>
-            <ArtworkCollection artworks={artworks} setArtworkToView={setArtworkToView} onView={onView}/>
+            <ArtworkCollection
+                artworks={artworks}
+                setArtworkToView={setArtworkToView}
+                onView={onView}
+                addCartItem={addCartItem}/>
 
         </>
     );

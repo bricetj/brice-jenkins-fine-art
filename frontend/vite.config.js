@@ -6,9 +6,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-    '/artworks': {
-      target: 'http://localhost:3000'
-      } 
+      '/artworks': {
+          target: 'http://localhost:3000'
+      },
+      '/carts': {
+          target: 'http://localhost:3000'
+      },
     }
   }
 })
