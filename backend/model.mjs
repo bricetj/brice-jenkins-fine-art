@@ -49,7 +49,6 @@ const artworkSchema = mongoose.Schema({
  * Compiles model from the schema.
  */
 const Artwork = mongoose.model(ARTWORK_DB_NAME, artworkSchema);
-const Cart = mongoose.model(CART_DB_NAME, cartSchema);
 
 
 /* ARTWORK MODEL METHODS */
