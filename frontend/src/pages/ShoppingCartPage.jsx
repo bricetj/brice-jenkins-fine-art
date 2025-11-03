@@ -3,7 +3,6 @@
  * Copyright: 2025
  */
 
-
 import CartCollection from "../components/CartCollection";
 
 function ShoppingCartPage({ shoppingCart, setItemToDelete, openPopupHandler, isVisible }) {

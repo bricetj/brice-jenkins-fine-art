@@ -1,3 +1,8 @@
+/*
+ * Brice Jenkins
+ * Copyright: 2025
+ */
+
 import ArtworkItem from "./ArtworkItem";
 
 function ArtworkCollection ({ artworks, onView, addCartItem, shoppingCart }) {

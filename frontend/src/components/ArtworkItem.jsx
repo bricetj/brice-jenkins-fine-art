@@ -1,3 +1,8 @@
+/*
+ * Brice Jenkins
+ * Copyright: 2025
+ */
+
 import Tooltip from "./Tooltip";
 
 function ArtworkItem ({ artwork, onView, addCartItem, shoppingCart }) {

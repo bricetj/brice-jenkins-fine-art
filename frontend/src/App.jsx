@@ -1,3 +1,8 @@
+/*
+ * Brice Jenkins
+ * Copyright: 2025
+ */
+
 import './App.css'
 import Navigation from './components/Navigation';
 import { useState } from 'react';

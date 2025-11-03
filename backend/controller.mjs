@@ -1,12 +1,12 @@
 /**
  * Brice Jenkins
+ * Copyright 2025
  */
 
 import 'dotenv/config';
 import express from 'express';
 import asyncHandler from 'express-async-handler';
 import * as shop from './model.mjs';
-
 
 const ERROR_INVALID_REQ = {Error: 'Invalid request'};
 const ERROR_NOT_FOUND = {Error: "Not found"};
@@ -61,35 +61,4 @@ app.get('/artworks/new', asyncHandler(async (req, res) => {
     const artworks = await shop.getNewArtworks();
     res.status(200).json(artworks);
 }))
-
-/* CART DB API'S*/
-
-// /**
-//  * Creates a new cart with the query parameters provided in the body.
-//  * @route POST /carts
-//  * @response Body: A JSON object with the properties of the cart object
-//  * sent in the request, as well as the _id and __v properties.
-//  */
-app.post('/carts', asyncHandler(async (req, res) => {
-    const newCart = await shop.createCart(req.body.title,
-                                                req.body.price,
-                                                req.body.medium,
-                                                req.body.materials,
-                                                req.body.description,
-                                                req.body.dimensions,
-                                                req.body.image);
-                                                    
-        res.status(201).json(newCart);
-    }
-));
-
-/**
- * Retrieves all cart documents in the database.
- * @route GET /artworks
- * @response Body: A JSON array containing objects of all artworks.
- */
-app.get('/carts', asyncHandler(async (req, res) => {
-    const cart = await shop.getCart();
-    res.status(200).json(artworks);
-}));
 

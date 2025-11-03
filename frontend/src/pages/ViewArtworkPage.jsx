@@ -3,7 +3,6 @@
  * Copyright: 2025
  */
 
-
 import Tooltip from "../components/Tooltip";
 
 function ViewArtworkPage({ artworkToView, addCartItem, shoppingCart }) {

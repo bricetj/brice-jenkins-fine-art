@@ -1,3 +1,8 @@
+/*
+ * Brice Jenkins
+ * Copyright: 2025
+ */
+
 import CartItem from "./CartItem";
 
 function CartCollection ({ shoppingCartItems, totalQuantity, setItemToDelete, openPopupHandler }) {

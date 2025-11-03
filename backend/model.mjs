@@ -1,5 +1,6 @@
 /**
  * Brice Jenkins
+ * Copyright 2025
  */
 
 import mongoose from 'mongoose';
@@ -28,6 +29,7 @@ async function connect(){
     }
 }
 
+
 /**
  * Defines artwork schema. All properties are required.
  */
@@ -42,16 +44,6 @@ const artworkSchema = mongoose.Schema({
     date: {type: 'Date', required: 'true'}
 });
 
-const cartItemSchema = mongoose.Schema({
-    artworkId: {type: mongoose.Schema.Types.ObjectId, ref: 'Artwork', unique: true },
-    quantity: {type: 'Number', required: 'true'}
-});
-
-const cartSchema = mongoose.Schema({
-    items: [cartItemSchema],
-    totalQuantity: {type: 'Number', required: 'true'},
-    totalPrice: {type: 'Number', required: 'true'},
-});
 
 /**
  * Compiles model from the schema.
@@ -61,16 +53,17 @@ const Cart = mongoose.model(CART_DB_NAME, cartSchema);
 
 
 /* ARTWORK MODEL METHODS */
+
 /**
  * Creates an artwork document.
- * @param {*} title 
- * @param {*} price 
- * @param {*} medium 
- * @param {*} materials 
- * @param {*} description 
- * @param {*} dimensions 
- * @param {*} image 
- * @returns 
+ * @param {*} title Title of the artwork (string).
+ * @param {*} price The price of the artwork (number).
+ * @param {*} medium The medium of the artwork (ex. Painting or Pencil) (string).
+ * @param {*} materials A description of the materials (string).
+ * @param {*} description A description of the artwork (string).
+ * @param {*} dimensions The dimensions of the artwork (string).
+ * @param {*} image A path to the image file (string).
+ * @returns A JSON object for the artwork document created.
  */
 const createArtwork = async (title, price, medium, materials, description, dimensions, image) => {
     const artwork = new Artwork({ title: title,
@@ -84,6 +77,7 @@ const createArtwork = async (title, price, medium, materials, description, dimen
     return artwork.save();
 }
 
+
 /**
  * Uses find() to return all artwork documents.
  * @returns A promise. Resolves to the JSON object(s) for all the document(s)
@@ -94,6 +88,12 @@ const getArtworks = async () => {
     return query.exec();
 }
 
+
+/**
+ * Uses find() to return all artwork documents within 3 months of the current date.
+ * @returns A promise. Resolves to the JSON object(s) for all the document(s)
+ * in the database. 
+ */
 const getNewArtworks = async () => {
     try {
         let threeMonths = new Date();
@@ -108,23 +108,5 @@ const getNewArtworks = async () => {
         console.error('Error retrieving new documents');
     }
 }
-
-/* CART MODEL METHODS */
-
-// const createCartItem = async (artworkId, quantity) => {
-//     try {
-
-//     } catch (error) {
-//         console.error('Error creating new cart item');
-//     }
-// }
-
-// const createCart = async () => {
-//     try {
-
-//     } catch (error) {
-//         console.error('Error creating new cart');
-//     }
-// }
 
 export { connect, getArtworks, getNewArtworks, createArtwork };
