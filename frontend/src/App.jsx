@@ -10,7 +10,9 @@ import HomePage from './pages/HomePage';
 import ShopPage from './pages/ShopPage';
 import ShoppingCartPage from './pages/ShoppingCartPage';
 import ViewArtworkPage from './pages/ViewArtworkPage';
-import { MdShoppingCart } from "react-icons/md";
+import LoginPage from './pages/LoginPage';
+import CreateAccountPage from './pages/CreateAccountPage';
+import { MdShoppingCart, MdPerson } from "react-icons/md";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import PopupWindow from './components/PopupWindow';
 
@@ -63,14 +65,21 @@ function App() {
         <header className="app-header">
           <div className="placeholder"></div>
           <div className="site-title">BRICE JENKINS FINE ART</div>
-            <div className="cart-icon">
-                <Link to="/cart"><MdShoppingCart/></Link>
-                {isVisible && <div className="red-circle">{shoppingCart.quantity}</div>}
-            </div>
+          <div className="site-icons">
+              <div className="cart-icon">
+                  <Link to="/cart"><MdShoppingCart/></Link>
+                  {isVisible && <div className="red-circle">{shoppingCart.quantity}</div>}
+              </div>
+              <div className="profile-icon">
+                  <Link to="/login"><MdPerson/></Link>
+              </div>
+          </div>
         </header>
         <Navigation/>
           <Routes>
             <Route path='/' element={<HomePage setArtworkToView={setArtworkToView} addCartItem={addCartItem} shoppingCart={shoppingCart} />}></Route>
+            <Route path='/login' element={<LoginPage></LoginPage>}></Route>
+            <Route path='/register' element={<CreateAccountPage></CreateAccountPage>}></Route>
             <Route path='/shop' element={<ShopPage setArtworkToView={setArtworkToView} addCartItem={addCartItem} shoppingCart={shoppingCart}/>}></Route>
             <Route path='/cart' element={<ShoppingCartPage shoppingCart={shoppingCart} setItemToDelete={setItemToDelete} openPopupHandler={openPopupHandler} isVisible={isVisible}/>}></Route>
             <Route path='/view-artwork' element={<ViewArtworkPage artworkToView={artworkToView} addCartItem={addCartItem} shoppingCart={shoppingCart}/>}></Route>

@@ -125,7 +125,7 @@ button:active {
 .app-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 20px;
     height: 60px;
     color: rgb(34, 34, 34);
@@ -133,10 +133,12 @@ button:active {
 }
 
 .placeholder {
+    flex: 0.15;
     width: 35px;
 }
 
 .site-title {
+    flex: 1;
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 30pt;
     font-weight: bold;
@@ -144,12 +146,34 @@ button:active {
     margin: 10px;
 }
 
-.cart-icon {
+.site-icons {
+    flex: 0.15;
+    display: flex;
+}
+
+.profile-icon {
     width: 35px;
     font-size: 35px;
+    color: rgb(65, 65, 65);
+}
+
+.profile-icon a:visited {
+    color: rgb(47, 47, 47);
+}
+
+.profile-icon a:hover {
+    color: rgb(112, 112, 112);
+    cursor: pointer;
+}
+
+.profile-icon a:active {
+    font-size: 90%;
 }
 
 .cart-icon {
+    margin-right: 20px;
+    width: 35px;
+    font-size: 35px;
     color: rgb(65, 65, 65);
 }
 
@@ -501,4 +525,31 @@ button:active {
 
 .popup-button {
     margin: 20px;
+}
+
+/* Login Component CSS */
+.login-block {
+    display: flex;
+    justify-content: center;
+}
+
+.login-form {
+    width: 550px;
+}
+
+.login-input-block {
+    margin: 20px;
+}
+
+.login-label {
+    display: flex;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.login-input {
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    font-size: 20px;
 }
