@@ -5,24 +5,44 @@
 
 import './App.css'
 import Navigation from './components/Navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import HomePage from './pages/HomePage';
 import ShopPage from './pages/ShopPage';
 import ShoppingCartPage from './pages/ShoppingCartPage';
 import ViewArtworkPage from './pages/ViewArtworkPage';
 import LoginPage from './pages/LoginPage';
 import CreateAccountPage from './pages/CreateAccountPage';
+import UserProfilePage from './pages/UserProfilePage';
 import { MdShoppingCart, MdPerson } from "react-icons/md";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import PopupWindow from './components/PopupWindow';
 
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
   const [artworkToView, setArtworkToView] = useState([]);
   const [shoppingCart, setShoppingCart] = useState({ items: [], quantity: 0, total: 0 });
   const [itemToDelete, setItemToDelete] = useState({});
   const [isVisible, setIsVisible] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
+
+  const checkLoginIn = async() => {
+      const response = await fetch("http://localhost:3001/auth/login-status", {
+        method: 'GET',  
+        credentials: "include"
+      });
+      if (response.status === 200) {
+          setLoggedIn(true);
+      } else {
+          setLoggedIn(false);
+      }
+  }
+
+  useEffect(() => {
+      checkLoginIn();
+  }, [])
+
+  const profileUrl = loggedIn ? '/user-profile' : '/login';
 
   // Handles opening the reset popup window.
   const openPopupHandler = () => {
@@ -71,18 +91,19 @@ function App() {
                   {isVisible && <div className="red-circle">{shoppingCart.quantity}</div>}
               </div>
               <div className="profile-icon">
-                  <Link to="/login"><MdPerson/></Link>
+                  <Link to={profileUrl}><MdPerson/></Link>
               </div>
           </div>
         </header>
         <Navigation/>
           <Routes>
             <Route path='/' element={<HomePage setArtworkToView={setArtworkToView} addCartItem={addCartItem} shoppingCart={shoppingCart} />}></Route>
-            <Route path='/login' element={<LoginPage></LoginPage>}></Route>
+            <Route path='/login' element={<LoginPage setLoggedIn={setLoggedIn}></LoginPage>}></Route>
             <Route path='/register' element={<CreateAccountPage></CreateAccountPage>}></Route>
             <Route path='/shop' element={<ShopPage setArtworkToView={setArtworkToView} addCartItem={addCartItem} shoppingCart={shoppingCart}/>}></Route>
             <Route path='/cart' element={<ShoppingCartPage shoppingCart={shoppingCart} setItemToDelete={setItemToDelete} openPopupHandler={openPopupHandler} isVisible={isVisible}/>}></Route>
             <Route path='/view-artwork' element={<ViewArtworkPage artworkToView={artworkToView} addCartItem={addCartItem} shoppingCart={shoppingCart}/>}></Route>
+            <Route path='/user-profile' element={<UserProfilePage setLoggedIn={setLoggedIn}></UserProfilePage>}></Route>
           </Routes>
       </Router>
       <div>

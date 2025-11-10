@@ -61,4 +61,3 @@ app.get('/artworks/new', asyncHandler(async (req, res) => {
     const artworks = await shop.getNewArtworks();
     res.status(200).json(artworks);
 }))
-
