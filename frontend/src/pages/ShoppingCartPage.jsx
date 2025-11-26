@@ -4,8 +4,35 @@
  */
 
 import CartCollection from "../components/CartCollection";
+import {useState, useEffect} from "react";
 
-function ShoppingCartPage({ shoppingCart, setItemToDelete, openPopupHandler, isVisible }) {
+
+function ShoppingCartPage({ shoppingCart, setShoppingCart, setItemToDelete, openPopupHandler, isVisible }) {
+    const[loading, setLoading] = useState(true);
+    
+    const getShoppingCart = async() => {
+        const response = await fetch("http://localhost:3002/cart/items", {  
+            credentials: "include"
+        });
+        const data = await response.json();
+        if (response.status === 200 || response.status === 201) {
+            setShoppingCart(data.cart);
+            shoppingCart=data.cart;
+            setLoading(false);
+        } else {
+            console.log("Error getting or creating cart")
+        }
+    }
+
+    useEffect(() => {
+        getShoppingCart();
+    })
+
+    // Handles rerendering until data is loaded.
+    if (loading) {
+        return
+    }
+
     return (
         <>
             <h2>Cart</h2>

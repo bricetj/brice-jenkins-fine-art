@@ -10,13 +10,15 @@ function ArtworkItem ({ artwork, onView, addCartItem, shoppingCart }) {
     let isDisabled = false;
     
     const changeCartButton = () => {
-        for (let i = 0; i < shoppingCart.items.length; i++) {
-            if (shoppingCart.items[i]._id == artwork._id) {
-                buttonText = "Item Added";
-                isDisabled = true;
-                return;
+        
+            for (let i = 0; i < shoppingCart.items.length; i++) {
+                if (shoppingCart.items[i]._id == artwork._id) {
+                    buttonText = "Item Added";
+                    isDisabled = true;
+                    return;
+                }
             }
-        }
+        
     }
 
     changeCartButton();
