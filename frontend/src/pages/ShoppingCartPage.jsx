@@ -4,7 +4,8 @@
  */
 
 import CartCollection from "../components/CartCollection";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 
 function ShoppingCartPage({ shoppingCart, setShoppingCart, setItemToDelete, openPopupHandler, isVisible }) {
@@ -33,39 +34,51 @@ function ShoppingCartPage({ shoppingCart, setShoppingCart, setItemToDelete, open
         return
     }
 
-    return (
-        <>
-            <h2>Cart</h2>
-            {isVisible && <h3 className="cart-header">{shoppingCart.quantity} Items </h3>}
-            <div>
-                <CartCollection 
-                    shoppingCartItems={shoppingCart.items}
-                    totalQuantity={shoppingCart.quantity}
-                    setItemToDelete={setItemToDelete}
-                    openPopupHandler={openPopupHandler}/>
-            </div>
-            {isVisible && <h3 className="cart-header">Order Summary</h3>}
-            <div className="cart-summary-row">
-                <div className="cart-summary-column-1">
-                    {isVisible && <p className="summary-text">Subtotal</p>}
-                    {isVisible && <p className="summary-text">Shipping and Tax</p>}
+    if (!isVisible) {
+        return (
+            <>
+                <h2>Cart</h2>
+                <p>There are no items in your cart</p>
+            </>
+        )
+    }
+
+    if (isVisible) {
+        return (
+            <>
+                <h2>Cart</h2>
+                <h3 className="cart-header">{shoppingCart.quantity} Items </h3>
+                <div>
+                    <CartCollection 
+                        shoppingCartItems={shoppingCart.items}
+                        isCheckout={false}
+                        setItemToDelete={setItemToDelete}
+                        openPopupHandler={openPopupHandler}/>
                 </div>
-                <div className="cart-summary-column-2">
-                    {isVisible && <p className="summary-text">${shoppingCart.total}</p>}
-                    {isVisible && <p className="summary-text">Calculated at Checkout</p>}
+                <h3 className="cart-header">Order Summary</h3>
+                <div className="cart-summary-row">
+                    <div className="cart-summary-column-1">
+                        <p className="summary-text">Subtotal</p>
+                        <p className="summary-text">Tax and Shipping</p>
+                    </div>
+                    <div className="cart-summary-column-2">
+                        <p className="summary-text">${shoppingCart.total}</p>
+                        <p className="summary-text">Included</p>
+                    </div>
                 </div>
-            </div>
-            {isVisible && <div className="dividing-line"></div>}
-            <div className="cart-summary-row">
-                <div className="cart-summary-column-1">
-                    {isVisible && <p className="summary-text">Subtotal</p>}
+                <div className="dividing-line"></div>
+                <div className="cart-summary-row">
+                    <div className="cart-summary-column-1">
+                        <p className="summary-text">Total</p>
+                    </div>
+                    <div className="cart-summary-column-2">
+                        <p className="summary-text">${shoppingCart.total}</p>
+                    </div>
                 </div>
-                <div className="cart-summary-column-2">
-                    {isVisible && <p className="summary-text">${shoppingCart.total}</p>}
-                </div>
-            </div>
-        </>
-    );
+                <Link to="/checkout"><button>Checkout</button></Link>
+            </>
+        )
+    };
 }
 
 export default ShoppingCartPage;

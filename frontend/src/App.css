@@ -382,34 +382,34 @@ button:active {
 
 .cart-summary-column-1 {
     flex: 50%;
-    margin-left: 100px;
+    margin-left: 10%;
     padding: 0;
     text-align: left;
 }
 
 .cart-summary-column-2 {
     flex: 50%;
-    margin-right: 100px;
+    margin-right: 10%;
     text-align: right;
 }
 
 .dividing-line {
     background-color: gray;
     margin: auto;
-    width: 950px;
+    width: 75%;
     height: 2px;
 }
 
 .cart-container {
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 .cart-item {
     display: flex;
-    width: 1000px;
     height: 100px;
-    background-color: rgb(207, 207, 207);
+    background-color: rgb(215, 215, 215);
     margin: 7px;
 }
 
@@ -434,10 +434,9 @@ button:active {
     display: inline-block;
     margin-left: 20px;
     height: 100px;
-    width: 300px;
-    transform: translateY(-30%);
+    width: 200px;
+    transform: translateY(-27%);
     text-align: left;
-
 }
 
 .cart-artwork-title {
@@ -448,6 +447,10 @@ button:active {
 .cart-artwork-price {
     display: inline-flex;
     transform: translateY(-55%);
+}
+
+.checkout-artwork-price {
+    transform: translateY(+55%);
 }
 
 .cart-placeholder {
@@ -552,4 +555,55 @@ button:active {
     height: 40px;
     padding: 10px;
     font-size: 20px;
+}
+
+.checkout-page-div {
+    display: flex;
+}
+
+.checkout-page-div button {
+    margin: 20px;
+    width: 200px;
+}
+
+.checkout-forms-div {
+    flex: 1;
+}
+
+.checkout-forms-div input[type="checkbox"] {
+    margin-bottom: 30px;
+    width: 20px;
+    height: 20px;
+}
+
+.checkout-forms-div label {
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+.checkout-info-form {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: auto;
+}
+
+.checkout-info-form input {
+    width: 100%;
+    font-size: 18px;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+}
+
+.your-order-div {
+    padding-right: 60px;
+    flex: 1;
+    max-width: 500px;
+}
+
+.your-order-div fieldset {
+    max-width: 450px;
 }

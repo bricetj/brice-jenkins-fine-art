@@ -6,7 +6,7 @@
 import Tooltip from "./Tooltip";
 import { MdDelete } from "react-icons/md";
 
-function CartItem ({ artwork, setItemToDelete, openPopupHandler }) {
+function CartItem ({ artwork, isCheckout, setItemToDelete, openPopupHandler }) {
     return (
         <div className="cart-item">
             <div className="cart-item-info">
@@ -19,12 +19,13 @@ function CartItem ({ artwork, setItemToDelete, openPopupHandler }) {
                 <div className="cart-artwork-information">
                     <div className="cart-artwork-title" >{artwork.title}</div>
                     <div className="cart-artwork-medium">{artwork.medium}</div>
+                    {isCheckout && <div className="checkout-artwork-price">${artwork.price}</div>}
                 </div>
-                <div className="cart-artwork-price">
+                {!isCheckout && <div className="cart-artwork-price">
                     <p>${artwork.price}</p>
-                </div>
-                <div className="cart-placeholder"></div>
-                <div className="cart-delete-icon">
+                </div>}
+                {!isCheckout && <div className="cart-placeholder"></div>}
+                {!isCheckout && <div className="cart-delete-icon">
                     <Tooltip
                         text="Select this icon to delete this item from your cart."
                         childElement={
@@ -38,7 +39,7 @@ function CartItem ({ artwork, setItemToDelete, openPopupHandler }) {
                         }
                         delay={1000}>
                     </Tooltip>
-                </div>
+                </div>}
             </div>
         </div>
     )

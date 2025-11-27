@@ -13,6 +13,7 @@ import ViewArtworkPage from './pages/ViewArtworkPage';
 import LoginPage from './pages/LoginPage';
 import CreateAccountPage from './pages/CreateAccountPage';
 import UserProfilePage from './pages/UserProfilePage';
+import CheckoutPage from './pages/CheckoutPage';
 import RouteAuthenticator from './components/RouteAuthenticator';
 import { MdShoppingCart, MdPerson } from "react-icons/md";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
@@ -192,6 +193,14 @@ function App() {
                     </UserProfilePage>
                   }>
                 </RouteAuthenticator>
+              }>
+            </Route>
+            <Route
+              path='/checkout'
+              element={
+                <CheckoutPage
+                  shoppingCart={shoppingCart}
+                  setShoppingCart={setShoppingCart}/>
               }>
             </Route>
           </Routes>

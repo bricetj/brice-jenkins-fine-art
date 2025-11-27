@@ -6,6 +6,12 @@
 import ArtworkItem from "./ArtworkItem";
 
 function ArtworkCollection ({ artworks, onView, addCartItem, shoppingCart }) {
+    if(!artworks) {
+        return (
+            <p>No artworks to display</p>
+        ) 
+    }
+
     return (
         <div className="gallery-container">
             <div className="gallery-blocks">

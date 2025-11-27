@@ -10,7 +10,7 @@ function ArtworkItem ({ artwork, onView, addCartItem, shoppingCart }) {
     let isDisabled = false;
     
     const changeCartButton = () => {
-        
+        if(shoppingCart.items.length) {
             for (let i = 0; i < shoppingCart.items.length; i++) {
                 if (shoppingCart.items[i]._id == artwork._id) {
                     buttonText = "Item Added";
@@ -18,7 +18,7 @@ function ArtworkItem ({ artwork, onView, addCartItem, shoppingCart }) {
                     return;
                 }
             }
-        
+        }
     }
 
     changeCartButton();
