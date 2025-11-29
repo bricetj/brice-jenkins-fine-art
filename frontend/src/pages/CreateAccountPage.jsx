@@ -1,5 +1,13 @@
+/**
+ * Brice Jenkins
+ * Copyright 2025
+ */
+
 import CreateAccount from "../components/CreateAccount";
 
+/**
+ * Creates a page to display the CreateAccount component.
+ */
 function CreateAccountPage() {
     return (
         <>

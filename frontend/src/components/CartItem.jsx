@@ -1,11 +1,22 @@
 /*
  * Brice Jenkins
- * Copyright: 2025
+ * Copyright 2025
  */
 
 import Tooltip from "./Tooltip";
 import { MdDelete } from "react-icons/md";
 
+/**
+ * React component that displays a particular artwork item in the shopping cart.
+ * 
+ * @param {array} artwork an artwork object.
+ * @param {boolean} isCheckout used to determine cart appearance when on shopping cart
+ * page or checkout page. 
+ * @param {function} setItemToDelete sets state variable to artwork object that user wants
+ * to delete. 
+ * @param {function} openPopupHandler function to open Delete Item popup window
+ * (from App.jsx); called when user selects delete icon.
+ */
 function CartItem ({ artwork, isCheckout, setItemToDelete, openPopupHandler }) {
     return (
         <div className="cart-item">

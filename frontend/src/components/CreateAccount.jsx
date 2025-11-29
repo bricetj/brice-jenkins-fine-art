@@ -1,17 +1,17 @@
 /**
- * Developers: Brice Jenkins, Alexandra Meyers, Meredith Baker
+ * Brice Jenkins, Alexandra Meyers, Meredith Baker
  * Copyright 2025
- * 
- * Description: A React component that returns a simple Create Account
- * form, including input fields for first name, last name, email, and
- * password. Includes handler function that is called when form information
- * is submitted. Handler function calls the /register endpoint in the
- * authorization microservice. 
  */
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * A React component that returns a simple Create Account form, including input
+ * fields for first name, last name, email, and password. Includes handler function
+ * that is called when form information is submitted. Handler function calls the
+ * /register endpoint in the authorization microservice. 
+ */
 function CreateAccount() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

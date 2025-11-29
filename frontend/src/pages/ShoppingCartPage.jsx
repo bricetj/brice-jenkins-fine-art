@@ -1,33 +1,36 @@
 /*
  * Brice Jenkins
- * Copyright: 2025
+ * Copyright 2025
  */
 
 import CartCollection from "../components/CartCollection";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-
+/**
+ * Creates a shopping cart page by retrieving the user's shopping cart and 
+ * displaying the items using the CartCollection component.
+ */
 function ShoppingCartPage({ shoppingCart, setShoppingCart, setItemToDelete, openPopupHandler, isVisible }) {
     const[loading, setLoading] = useState(true);
     
-    const getShoppingCart = async() => {
-        const response = await fetch("http://localhost:3002/cart/items", {  
-            credentials: "include"
-        });
-        const data = await response.json();
-        if (response.status === 200 || response.status === 201) {
-            setShoppingCart(data.cart);
-            shoppingCart=data.cart;
-            setLoading(false);
-        } else {
-            console.log("Error getting or creating cart")
-        }
-    }
-
     useEffect(() => {
+        const getShoppingCart = async() => {
+            const response = await fetch("http://localhost:3002/cart/items", {  
+                credentials: "include"
+            });
+            const data = await response.json();
+            if (response.status === 200 || response.status === 201) {
+                setShoppingCart(data.cart);
+                shoppingCart=data.cart;
+                setLoading(false);
+            } else {
+                console.log("Error getting or creating cart")
+            }
+        }
+        
         getShoppingCart();
-    })
+    }, []);
 
     // Handles rerendering until data is loaded.
     if (loading) {

@@ -1,27 +1,32 @@
 /*
  * Brice Jenkins
- * Copyright: 2025
+ * Copyright 2025
  */
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ArtworkCollection from "../components/ArtworkCollection";
 
+/**
+ * Displays a gallery of artworks by retrieving the artworks from the
+ * database and displaying them using the ArtworkCollection component. 
+ */
 function ShopPage({ setArtworkToView, addCartItem, shoppingCart }) {
     const [artworks, setArtworks] = useState([]);
     const navigate = useNavigate();
     
     // Calls the 'GET /artworks' endpoint in the REST API.
-    const loadArtworks = async () => {
-        const response = await fetch('/artworks');
-        const data = await response.json();
-        setArtworks(data);
-    }
-
     useEffect( () => {
+        const loadArtworks = async () => {
+            const response = await fetch('/artworks');
+            const data = await response.json();
+            setArtworks(data);
+        }
+
         loadArtworks();
     }, []);
 
+    // When a user clicks on an artwork.
     const onView = (artwork) => {
         setArtworkToView(artwork)
         navigate('/view-artwork')

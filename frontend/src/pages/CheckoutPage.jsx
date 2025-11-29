@@ -1,34 +1,158 @@
+/**
+ * Brice Jenkins
+ * Copyright 2025
+ */
+
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import CartCollection from "../components/CartCollection";
 
-function CheckoutPage ({ shoppingCart, setShoppingCart }) {
-    const [checked, setChecked] = useState(false);
-    const[loading, setLoading] = useState(true);
-        
-    const getShoppingCart = async() => {
-        const response = await fetch("http://localhost:3002/cart/items", {  
-            credentials: "include"
+/**
+ * Displays a checkout page with input fields to enter shipping information and
+ * billing information; also displays a summary of items in a user's cart. Allows
+ * user to submit their order, which generates a confirmation email.
+ */
+function CheckoutPage ({ shoppingCart, setShoppingCart, setIsVisible, loggedIn }) {
+    const [loading, setLoading] = useState(true);
+    const [cardLogo, setCardLogo] = useState(null);
+    const [logoVisible, setLogoVisible] = useState(false);
+    const navigate = useNavigate();
+
+    // Shipping info state variables.
+    const [emailAddress, setEmailAddress] = useState();
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [zip, setZip] = useState('');
+
+    // Payment state variables.
+    const [cardholder, setCardholder] = useState('');
+    const [cardNumber, setCardNumber] = useState('');
+    const [cvv, setCvv] = useState('');
+    const [expiration, setExpiration] = useState('');
+
+    useEffect(() => {
+        // Retrieves user email if already signed in.
+        const getUserEmail = async() => {
+            const response = await fetch("http://localhost:3001/auth/login-status", { 
+                credentials: "include"
+            });
+            const data = await response.json();
+            console.log(data.email)
+
+            if (response.status === 200) {
+                setEmailAddress(data.email);
+            }
+        }
+        getUserEmail();
+    }, []);
+    
+
+    useEffect(() => {
+        // Retrieves a user's shopping cart.  
+        const getShoppingCart = async() => {
+            const response = await fetch("http://localhost:3002/cart/items", {  
+                credentials: "include"
+            });
+            const data = await response.json();
+            if (response.status === 200 || response.status === 201) {
+                setShoppingCart(data.cart);
+                shoppingCart = data.cart;
+                setLoading(false);
+            } else {
+                console.log("Error getting or creating cart")
+            }
+        }
+
+        getShoppingCart();
+    }, []);
+
+    // Validates a card number and displays corresponding card type logo.
+    const cardNumChangeHandler = async(cardNum) => {
+        const response = await fetch("http://localhost:3003/payment/validate", {
+            method: "POST",
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({cardNum: cardNum}) 
         });
+
         const data = await response.json();
-        if (response.status === 200 || response.status === 201) {
-            setShoppingCart(data.cart);
-            shoppingCart=data.cart;
-            setLoading(false);
+        const cardType = data.cardType;
+
+        let logoUrl;
+        if(cardType !== "Card not recognized") {
+            logoUrl = `../src/assets/logos/${cardType}.png`
+        }
+
+        if (logoUrl) {
+            setCardNumber(cardNum);
+            setCardLogo(logoUrl);
+            setLogoVisible(true);
         } else {
-            console.log("Error getting or creating cart")
+            setCardNumber(cardNum);
+            setCardLogo(null);
+            setLogoVisible(false);
         }
     }
 
-    useEffect(() => {
-        getShoppingCart();
-    })
-
-    const handleCheck = () => {
-        if (!checked) {
-            setChecked(true);
+    // Empties a cart. Called after successful payment.
+    const emptyCart = async() => {
+        const response = await fetch("http://localhost:3002/cart/items", {
+            method: "DELETE",
+            credentials: "include"
+        });
+        const data = await response.json();
+        if (response.status === 200) {
+            setShoppingCart(data.cart);
+            setIsVisible(false);
         } else {
-            setChecked(false);
+            console.log("Error emptying cart")
         }
+    }
+
+    // Handles submission of order data.
+    const submitOrderHandler = async() => {
+        const items = shoppingCart.items;
+        const total = shoppingCart.total;
+        const email = emailAddress;
+        const shippingInfo = {
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phoneNumber,
+            address: address,
+            city: city,
+            state: state,
+            zip: zip
+        };
+        const billingInfo = {
+            cardholder: cardholder,
+            cardNum: cardNumber,
+            cvv: cvv,
+            expiration: expiration
+        };
+        const response = await fetch(
+            "http://localhost:3003/payment/orders", {
+                method: 'POST',
+                headers: {'Content-type': 'application/json'},
+                body: JSON.stringify({
+                    items: items,
+                    total: total,
+                    email: email,
+                    shippingInfo: shippingInfo,
+                    billingInfo: billingInfo,
+                })
+            } 
+        )
+        if (response.status === 200) {
+            alert("Your order was processed successfully!");
+            await emptyCart();
+            navigate("/");
+        } else {
+            alert("There was an error processing your order");
+        }
+        
     }
 
     // Handles rerendering until data is loaded.
@@ -39,16 +163,31 @@ function CheckoutPage ({ shoppingCart, setShoppingCart }) {
     return(
         <>
             <h2>Checkout</h2>
-            <div class="checkout-page-div">
+            <div className="checkout-page-div">
                 <div className="checkout-forms-div">
                     <h3>Shipping Information</h3>
                     <form className="checkout-info-form">
                         <fieldset>
                             <div>
+                                {!loggedIn && <div>
+                                     <input 
+                                        required
+                                        value={emailAddress || ''}
+                                        placeholder="Email Address"
+                                        onChange={e => {
+                                            setEmailAddress(e.target.value);
+                                        }}>
+                                    </input>
+                                </div>}
+                            </div>
+                            <div>
                                 <div>
                                     <input 
                                         required
-                                        placeholder="First Name">
+                                        placeholder="First Name"
+                                        onChange={e => {
+                                            setFirstName(e.target.value);
+                                        }}>
                                     </input>
                                 </div>
                             </div>
@@ -56,7 +195,10 @@ function CheckoutPage ({ shoppingCart, setShoppingCart }) {
                                 <div className="">
                                     <input
                                         required
-                                        placeholder="Last Name">
+                                        placeholder="Last Name"
+                                        onChange={e => {
+                                            setLastName(e.target.value);
+                                        }}>
                                     </input>
                                 </div>
                             </div>
@@ -64,7 +206,10 @@ function CheckoutPage ({ shoppingCart, setShoppingCart }) {
                                 <div>
                                     <input 
                                         required
-                                        placeholder="Phone Number">
+                                        placeholder="Phone Number"
+                                        onChange={e => {
+                                            setPhoneNumber(e.target.value);
+                                        }}>
                                     </input>
                                 </div>
                             </div>
@@ -72,7 +217,10 @@ function CheckoutPage ({ shoppingCart, setShoppingCart }) {
                                 <div>
                                     <input 
                                         required
-                                        placeholder="Address">
+                                        placeholder="Address"
+                                        onChange={e => {
+                                            setAddress(e.target.value);
+                                        }}>
                                     </input>
                                 </div>
                             </div>
@@ -80,7 +228,10 @@ function CheckoutPage ({ shoppingCart, setShoppingCart }) {
                                 <div>
                                     <input 
                                         required
-                                        placeholder="City">
+                                        placeholder="City"
+                                        onChange={e => {
+                                            setCity(e.target.value);
+                                        }}>
                                     </input>
                                 </div>
                             </div>
@@ -88,7 +239,10 @@ function CheckoutPage ({ shoppingCart, setShoppingCart }) {
                                 <div>
                                     <input 
                                         required
-                                        placeholder="State">
+                                        placeholder="State"
+                                        onChange={e => {
+                                            setState(e.target.value);
+                                        }}>
                                     </input>
                                 </div>
                             </div>
@@ -96,79 +250,17 @@ function CheckoutPage ({ shoppingCart, setShoppingCart }) {
                                 <div>
                                     <input 
                                         required
-                                        placeholder="Zip Code">
+                                        placeholder="Zip Code"
+                                        onChange={e => {
+                                            setZip(e.target.value);
+                                        }}>
                                     </input>
                                 </div>
                             </div>
                             
                         </fieldset>
                     </form>
-                    <input type="checkbox" onClick={handleCheck}></input><label>Billing is the same as shipping</label>
-                    <br></br>
-                    {!checked && 
-                    <div>
-                        <h3>Billing Information</h3>
-                        <form className="checkout-info-form">
-                        <fieldset>
-                            <div>
-                                <div>
-                                    <input 
-                                        required
-                                        placeholder="First Name">
-                                    </input>
-                                </div>
-                            </div>
-                            <div>
-                                <div>
-                                    <input
-                                        required
-                                        placeholder="Last Name">
-                                    </input>
-                                </div>
-                            </div>
-                            <div>
-                                <div>
-                                    <input 
-                                        required
-                                        placeholder="Phone Number">
-                                    </input>
-                                </div>
-                            </div>
-                            <div>
-                                <div>
-                                    <input 
-                                        required
-                                        placeholder="Address">
-                                    </input>
-                                </div>
-                            </div>
-                            <div>
-                                <div>
-                                    <input 
-                                        required
-                                        placeholder="City">
-                                    </input>
-                                </div>
-                            </div>
-                            <div>
-                                <div>
-                                    <input 
-                                        required
-                                        placeholder="State">
-                                    </input>
-                                </div>
-                            </div>
-                            <div>
-                                <div>
-                                    <input 
-                                        required
-                                        placeholder="Zip Code">
-                                    </input>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </form>
-                    </div>}
+                    
                     <div>
                         <h3>Payment Information</h3>
                         <form className="checkout-info-form">
@@ -177,15 +269,37 @@ function CheckoutPage ({ shoppingCart, setShoppingCart }) {
                                 <div>
                                     <input 
                                         required
-                                        placeholder="Credit Card Number">
+                                        placeholder="Cardholder Name"
+                                        onChange={e => {
+                                            setCardholder(e.target.value);
+                                        }}>
                                     </input>
+                                </div>
+                            </div>
+                            <div>
+                                <div className = "card-number-div">
+                                    <input 
+                                        required
+                                        placeholder="Credit Card Number"
+                                        onChange={e => {
+                                            cardNumChangeHandler(e.target.value);
+                                        }}>
+                                    </input>
+                                    {logoVisible && <img
+                                        className="card-logo-image"
+                                        src={cardLogo}
+                                        alt="Credit card logo">
+                                    </img>}
                                 </div>
                             </div>
                             <div>
                                 <div>
                                     <input
                                         required
-                                        placeholder="CVV">
+                                        placeholder="CVV"
+                                        onChange={e => {
+                                            setCvv(e.target.value);
+                                        }}>
                                     </input>
                                 </div>
                             </div>
@@ -194,7 +308,10 @@ function CheckoutPage ({ shoppingCart, setShoppingCart }) {
                                     <input 
                                         type="text"
                                         placeholder="Expiration Date (MM/YY)"
-                                        required>
+                                        required
+                                        onChange={e => {
+                                            setExpiration(e.target.value);
+                                        }}>
                                     </input>
                                 </div>
                             </div>
@@ -228,7 +345,13 @@ function CheckoutPage ({ shoppingCart, setShoppingCart }) {
                             </div>
                         </div>
                     </fieldset>
-                    <button type="submit">Submit Order</button>
+                    <button 
+                        type="submit"
+                        onClick={e => {
+                                    e.preventDefault();
+                                    submitOrderHandler();
+                                    }}
+                        >Submit Order</button>
                 </div>
             </div>
         </>

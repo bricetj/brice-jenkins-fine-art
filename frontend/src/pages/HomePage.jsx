@@ -1,6 +1,6 @@
-/*
+/**
  * Brice Jenkins
- * Copyright: 2025
+ * Copyright 2025
  */
 
 import { Link } from "react-router-dom";
@@ -9,7 +9,8 @@ import ArtworkCollection from "../components/ArtworkCollection";
 import { useNavigate } from "react-router-dom";
 
 /**
- * React page component that creates a simple homepage for the app.
+ * React page component that creates a simple homepage for the app. Displays
+ * a welcome banner and artworks that are no older than 3 months.
  */
 function HomePage({ setArtworkToView, addCartItem, shoppingCart }) {
     const [artworks, setArtworks] = useState([]);

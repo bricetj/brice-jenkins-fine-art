@@ -1,27 +1,39 @@
 /*
  * Brice Jenkins
- * Copyright: 2025
+ * Copyright 2025
  */
 
 import Tooltip from "./Tooltip";
 
-function ArtworkItem ({ artwork, onView, addCartItem, shoppingCart }) {
+/**
+ * React component that displays a particular artwork and its associated
+ * information in a table or grid view.
+ * 
+ * @param {array} artwork an artwork object.
+ * @param {object} shoppingCart an object representing a user's shopping cart.
+ * @param {function} onView determines behavior when an artwork item is selected. 
+ * @param {function} addCartItem function to run when Add to Cart button is
+ * selected.
+ */
+function ArtworkItem ({ artwork, shoppingCart, onView, addCartItem }) {
     let buttonText = "Add to Cart";
     let isDisabled = false;
-    
+
+    // Changes "Add to Cart" button text and disables button when a
+    // particular item is added to the cart.
     const changeCartButton = () => {
-        if(shoppingCart.items.length) {
-            for (let i = 0; i < shoppingCart.items.length; i++) {
-                if (shoppingCart.items[i]._id == artwork._id) {
-                    buttonText = "Item Added";
-                    isDisabled = true;
-                    return;
-                }
+        for (let i = 0; i < shoppingCart.items.length; i++) {
+            if (shoppingCart.items[i]._id == artwork._id) {
+                buttonText = "Item Added";
+                isDisabled = true;
+                return;
             }
         }
     }
-
-    changeCartButton();
+    
+    if (shoppingCart.items) {
+        changeCartButton();
+    }
 
     return (
         <div className="artwork-item">

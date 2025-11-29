@@ -1,17 +1,17 @@
 /**
- * Developers: Brice Jenkins, Alexandra Meyers, Meredith Baker
- * Copyright 2025
- * 
- * Description: A React component that returns a simple login form
- * including input fields for email and password. Includes handler
- * function that is called when form information is submitted.
- * Handler function calls the /login endpoint in the
- * authorization microservice. 
+ * Brice Jenkins, Alexandra Meyers, Meredith Baker
+ * Copyright 2025 
  */
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * A React component that returns a simple login form including input
+ * fields for email and password. Includes handler function that is
+ * called when form information is submitted. Handler function calls
+ * the /login endpoint in the authorization microservice. 
+ */
 function Login({ setLoggedIn }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

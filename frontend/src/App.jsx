@@ -14,6 +14,7 @@ import LoginPage from './pages/LoginPage';
 import CreateAccountPage from './pages/CreateAccountPage';
 import UserProfilePage from './pages/UserProfilePage';
 import CheckoutPage from './pages/CheckoutPage';
+import OrderHistoryPage from './pages/OrderHistoryPage';
 import RouteAuthenticator from './components/RouteAuthenticator';
 import { MdShoppingCart, MdPerson } from "react-icons/md";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
@@ -21,6 +22,7 @@ import PopupWindow from './components/PopupWindow';
 
 
 function App() {
+  const [userEmail, setUserEmail] = useState(null)
   const [loggedIn, setLoggedIn] = useState(false);
   const [artworkToView, setArtworkToView] = useState([]);
   const [shoppingCart, setShoppingCart] = useState({});
@@ -28,21 +30,25 @@ function App() {
   const [isVisible, setIsVisible] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
 
-  const checkLogIn = async() => {
-      const response = await fetch("http://localhost:3001/auth/login-status", { 
-        credentials: "include"
-      });
-      if (response.status === 200) {
-          setLoggedIn(true);
-      } else {
-          setLoggedIn(false);
-      }
-  }
-
   useEffect(() => {
-      checkLogIn();
+      const checkLogIn = async() => {
+        const response = await fetch("http://localhost:3001/auth/login-status", { 
+            credentials: "include"
+        });
+        const data = await response.json();
+
+        if (response.status === 200) {
+            setLoggedIn(true);
+            setUserEmail(data.email);
+        } else {
+            setLoggedIn(false);
+        }
+    }
+
+    checkLogIn();
   }, [])
 
+  // Changes URL for profile icon based on login status.
   const profileUrl = loggedIn ? '/user-profile' : '/login';
 
   // Handles opening the reset popup window.
@@ -55,22 +61,22 @@ function App() {
       setPopupOpen(false);
   }
 
-  const getShoppingCart = async() => {
-      const response = await fetch("http://localhost:3002/cart/items", {  
-          credentials: "include"
-      });
-      const data = await response.json();
-      if (response.status === 200 || response.status === 201) {
-          setShoppingCart(data.cart);
-      } else {
-          console.log("Error getting or creating cart")
-      }
-      if (data.cart.quantity > 0) {
-          setIsVisible(true);
-      }
-  } 
-
   useEffect(() => {
+      const getShoppingCart = async() => {
+          const response = await fetch("http://localhost:3002/cart/items", {  
+              credentials: "include"
+          });
+          const data = await response.json();
+          if (response.status === 200 || response.status === 201) {
+              setShoppingCart(data.cart);
+          } else {
+              console.log("Error getting or creating cart")
+          }
+          if (data.cart.quantity > 0) {
+              setIsVisible(true);
+          }
+      } 
+      
       getShoppingCart();
   }, [])
 
@@ -189,6 +195,7 @@ function App() {
                 <RouteAuthenticator
                   component={
                     <UserProfilePage
+                      userEmail={userEmail}
                       setLoggedIn={setLoggedIn}>
                     </UserProfilePage>
                   }>
@@ -199,8 +206,23 @@ function App() {
               path='/checkout'
               element={
                 <CheckoutPage
+                  userEmail={userEmail}
                   shoppingCart={shoppingCart}
-                  setShoppingCart={setShoppingCart}/>
+                  setShoppingCart={setShoppingCart}
+                  setIsVisible={setIsVisible}
+                  loggedIn={loggedIn}/>
+              }>
+            </Route>
+            <Route
+              path='/order-history'
+              element={
+                <RouteAuthenticator
+                  component={
+                    <OrderHistoryPage>
+                
+                    </OrderHistoryPage>
+                  }>
+                </RouteAuthenticator>
               }>
             </Route>
           </Routes>
@@ -213,8 +235,8 @@ function App() {
             noButtonText={'Cancel'}
             yesButtonText={'Remove'}
             onNo={onClose}
-            onYes={deleteCartItem}
-      ></PopupWindow>
+            onYes={deleteCartItem}>
+        </PopupWindow>
       </div>
       <footer>
         <p>&copy; 2025 Brice Jenkins</p>

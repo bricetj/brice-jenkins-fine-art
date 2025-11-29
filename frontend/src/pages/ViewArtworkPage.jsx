@@ -1,14 +1,20 @@
 /*
  * Brice Jenkins
- * Copyright: 2025
+ * Copyright 2025
  */
 
 import Tooltip from "../components/Tooltip";
 
+/**
+ * Creates a page for viewing one particular artwork that the user
+ * selects from the artwork gallery. 
+ */
 function ViewArtworkPage({ artworkToView, addCartItem, shoppingCart }) {
     let buttonText = "Add to Cart";
     let isDisabled = false;
     
+    // Changes "Add to Cart" button text and disables button when a
+    // particular item is added to the cart. 
     const changeCartButton = () => {
         for (let i = 0; i < shoppingCart.items.length; i++) {
             if (shoppingCart.items[i]._id == artworkToView._id) {
@@ -19,7 +25,9 @@ function ViewArtworkPage({ artworkToView, addCartItem, shoppingCart }) {
         }
     }
 
-    changeCartButton();
+    if (shoppingCart.items) {
+        changeCartButton();
+    }
 
     return (
         <>

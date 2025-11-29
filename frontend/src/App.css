@@ -1,6 +1,6 @@
 /*
  * Brice Jenkins
- * Copyright: 2025
+ * Copyright 2025
  */
 
 #root {
@@ -70,6 +70,44 @@ nav a:hover {
     box-shadow: 0px 0px 1px inset;
     color: rgb(230, 230, 230);
     background-color: light-dark(rgb(70, 70, 70), rgb(45, 45, 45));
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 1px 1px 20px 5px rgb(209, 209, 209);
+    margin: auto;
+}
+
+thead {
+    padding: 10px;
+    border: 1px solid rgb(147, 147, 147);
+    border-collapse: collapse;
+    background-color: light-dark(rgb(200, 200, 200), rgb(61, 61, 61));
+}
+
+tr th {
+    padding: 5px;
+    color: light-dark(rgb(30, 30, 30), rgb(230, 230, 230));
+    border: 1px solid rgb(147, 147, 147);
+    border-collapse: collapse;
+}
+
+tr td {
+    padding: 10px;
+    color: rgb(30, 30, 30);
+    border: solid 1pt rgb(147, 147, 147);
+    border-radius: 5px;
+    border-collapse: collapse;
+    max-width: 250px;
+}
+
+tr:hover {
+    background-color: rgb(215, 215, 215);
+}
+
+thead tr:hover {
+    background-color: light-dark(rgb(200, 200, 200), rgb(61, 61, 61));
 }
 
 footer {
@@ -243,13 +281,6 @@ button:active {
 }
 
 /* Artwork/Shop Item CSS */
-/* .gallery-container {
-    
-}
-
-.gallery-blocks {
-    
-} */
 
 .column-container {
     display: flex;
@@ -316,6 +347,7 @@ button:active {
 }
 
 /* Artwork View CSS */
+
 .view-artwork-container {
     display: flex;
     padding-top: 40px;
@@ -478,6 +510,7 @@ button:active {
     font-size: 90%;
 }
 
+/* Tooltip CSS */
 
 .tooltip-div {
     position: relative;
@@ -498,6 +531,8 @@ button:active {
     border-radius: 10px;
     box-shadow: 1px 1px 1px rgb(70, 70, 70);
 }
+
+/* Popup Window CSS */
 
 .popup-outer-div {
     position: fixed;
@@ -531,6 +566,7 @@ button:active {
 }
 
 /* Login Component CSS */
+
 .login-block {
     display: flex;
     justify-content: center;
@@ -556,6 +592,8 @@ button:active {
     padding: 10px;
     font-size: 20px;
 }
+
+/* Checkout Page CSS */
 
 .checkout-page-div {
     display: flex;
@@ -606,4 +644,25 @@ button:active {
 
 .your-order-div fieldset {
     max-width: 450px;
+}
+
+.card-number-div {
+    display: flex;
+}
+
+.card-number-div input{
+    width: 375px;
+}
+
+.card-logo-image {
+    height: 20px;
+    max-width: 50px;
+    padding: 20px;
+    margin: auto;
+}
+
+/* Nested Table CSS in Order History */
+
+.nested-table table {
+    box-shadow: none;
 }
