@@ -16,6 +16,7 @@ function CheckoutPage ({ shoppingCart, setShoppingCart, setIsVisible, loggedIn }
     const [loading, setLoading] = useState(true);
     const [cardLogo, setCardLogo] = useState(null);
     const [logoVisible, setLogoVisible] = useState(false);
+    const [isSubscribed, setIsSubscribed] = useState(false);
     const navigate = useNavigate();
 
     // Shipping info state variables.
@@ -41,7 +42,6 @@ function CheckoutPage ({ shoppingCart, setShoppingCart, setIsVisible, loggedIn }
                 credentials: "include"
             });
             const data = await response.json();
-            console.log(data.email)
 
             if (response.status === 200) {
                 setEmailAddress(data.email);
@@ -97,6 +97,27 @@ function CheckoutPage ({ shoppingCart, setShoppingCart, setIsVisible, loggedIn }
         }
     }
 
+    // Handles when email subscription checkbox is clicked.
+    const checkboxHandler = (event) => {
+        setIsSubscribed(event.target.checked);
+    }
+
+    // Calls API when user opts in for email notifications.
+    const handleSubscribe = async() => {
+        console.log("sending fetch")
+        const subResponse = await fetch (
+            "http://localhost:6003/opt-in", {
+                method: 'POST',
+                headers: {'Content-type': 'application/json'},
+                body: JSON.stringify({email: emailAddress})
+            } 
+        );
+        const data = await subResponse.json();
+        if (subResponse.status === 200) {
+            console.log(data.message);
+        }
+    }
+
     // Empties a cart. Called after successful payment.
     const emptyCart = async() => {
         const response = await fetch("http://localhost:3002/cart/items", {
@@ -132,7 +153,7 @@ function CheckoutPage ({ shoppingCart, setShoppingCart, setIsVisible, loggedIn }
             cvv: cvv,
             expiration: expiration
         };
-        const response = await fetch(
+        const orderResponse = await fetch(
             "http://localhost:3003/payment/orders", {
                 method: 'POST',
                 headers: {'Content-type': 'application/json'},
@@ -144,15 +165,19 @@ function CheckoutPage ({ shoppingCart, setShoppingCart, setIsVisible, loggedIn }
                     billingInfo: billingInfo,
                 })
             } 
-        )
-        if (response.status === 200) {
+        );
+        const data = await orderResponse.json();
+        if (orderResponse.status === 200) {
+            if (isSubscribed) {
+                await handleSubscribe();
+            }
+            console.log(data.message);
             alert("Your order was processed successfully!");
             await emptyCart();
             navigate("/");
         } else {
             alert("There was an error processing your order");
         }
-        
     }
 
     // Handles rerendering until data is loaded.
@@ -165,12 +190,17 @@ function CheckoutPage ({ shoppingCart, setShoppingCart, setIsVisible, loggedIn }
             <h2>Checkout</h2>
             <div className="checkout-page-div">
                 <div className="checkout-forms-div">
-                    <h3>Shipping Information</h3>
-                    <form className="checkout-info-form">
+                    <form 
+                        className="checkout-info-form"
+                        onSubmit={e => {
+                            e.preventDefault();
+                            submitOrderHandler();
+                            }}>
+                        <h3>Shipping Information</h3>
                         <fieldset>
                             <div>
                                 {!loggedIn && <div>
-                                     <input 
+                                    <input 
                                         required
                                         value={emailAddress || ''}
                                         placeholder="Email Address"
@@ -256,14 +286,9 @@ function CheckoutPage ({ shoppingCart, setShoppingCart, setIsVisible, loggedIn }
                                         }}>
                                     </input>
                                 </div>
-                            </div>
-                            
+                            </div> 
                         </fieldset>
-                    </form>
-                    
-                    <div>
                         <h3>Payment Information</h3>
-                        <form className="checkout-info-form">
                         <fieldset>
                             <div>
                                 <div>
@@ -316,8 +341,16 @@ function CheckoutPage ({ shoppingCart, setShoppingCart, setIsVisible, loggedIn }
                                 </div>
                             </div>
                         </fieldset>
+                        <div className="checkbox-div">
+                            <input
+                                type="checkbox"
+                                checked={isSubscribed}
+                                onChange={checkboxHandler}>
+                            </input>
+                            <label>Subscribe for email updates concerning new artworks or promotions!</label>
+                        </div>
+                        <button type="submit">Submit Order</button>
                     </form>
-                    </div>
                 </div>
                 <div className="your-order-div">
                     <h3>Your Order</h3>
@@ -345,13 +378,6 @@ function CheckoutPage ({ shoppingCart, setShoppingCart, setIsVisible, loggedIn }
                             </div>
                         </div>
                     </fieldset>
-                    <button 
-                        type="submit"
-                        onClick={e => {
-                                    e.preventDefault();
-                                    submitOrderHandler();
-                                    }}
-                        >Submit Order</button>
                 </div>
             </div>
         </>

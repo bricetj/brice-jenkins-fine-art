@@ -92,6 +92,7 @@ function App() {
       const data = await response.json();
       if (response.status === 200) {
           setShoppingCart(data.cart);
+          console.log(data.cart);
       } else {
           console.log("Error adding item")
       }

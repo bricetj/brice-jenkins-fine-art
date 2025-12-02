@@ -28,12 +28,14 @@ function CreateAccount() {
                 body: JSON.stringify(newUser)
             }
         )
+        const data = await response.json();
         if(response.status === 201) {
             alert("User account successfully added");
             navigate('/login');
         } else {
             alert("Email already exists");
         }
+        console.log(data.message)
     }
 
     return (

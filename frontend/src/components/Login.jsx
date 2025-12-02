@@ -29,6 +29,7 @@ function Login({ setLoggedIn }) {
                 body: JSON.stringify(credentials)
             }
         )
+        const data = await response.json();
         if(response.status === 200) {
             setLoggedIn(true);
             alert("Login successful!");
@@ -36,6 +37,7 @@ function Login({ setLoggedIn }) {
         } else {
             alert("Email or password incorrect");
         }
+        console.log(data.message);
     }
 
     return (
